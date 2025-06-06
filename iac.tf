@@ -23,6 +23,15 @@ resource "aws_vpc" "iac-vpc" {
   }
 }
 
+# VPC2
+resource "aws_vpc" "iac-vpc2" {
+  cidr_block = "10.1.0.0/16"
+
+    tags = {
+    Name = "iac-vpc2"
+  }
+}
+
 # Subnet
 resource "aws_subnet" "iac-subnet" {
   vpc_id     = aws_vpc.iac-vpc.id
@@ -33,8 +42,19 @@ resource "aws_subnet" "iac-subnet" {
   }
 }
 
+# 2
+resource "aws_subnet" "iac-subnet2" {
+  vpc_id     = aws_vpc.iac-vpc2.id
+  cidr_block = "10.1.1.0/24"
+
+  tags = {
+    Name = "iac-subnet2"
+  }
+}
+
 # ひな型
 # resource "<provider>_<resource_type>" "name" {
 #   key1 = "value1"
 #   key2 = "value2"
 # }
+
