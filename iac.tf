@@ -12,6 +12,12 @@ resource "aws_vpc" "iac-vpc" {
   }
 }
 
+variable "subnet_prefix" {
+  description = "cidr block for the subnet"
+  # default = "10.0.1.0/24"
+  # type = string
+}
+
 #2 インターネットゲートウェイ作成
 resource "aws_internet_gateway" "iac-gateway" {
   vpc_id = aws_vpc.iac-vpc.id
@@ -39,10 +45,20 @@ resource "aws_route_table" "iac-route-table" {
 #4 サブネット作成
 resource "aws_subnet" "iac-subnet" {
   vpc_id     = aws_vpc.iac-vpc.id
-  cidr_block = "10.0.1.0/24"
+  cidr_block = var.subnet_prefix[0].cidr_block
   availability_zone = "ap-northeast-1a"
   tags = {
-    Name = "iac-subnet"
+    Name = var.subnet_prefix[0].name
+  }
+}
+
+#4-2 サブネット作成
+resource "aws_subnet" "iac-subnet2" {
+  vpc_id     = aws_vpc.iac-vpc.id
+  cidr_block = var.subnet_prefix[1].cidr_block
+  availability_zone = "ap-northeast-1a"
+  tags = {
+    Name = var.subnet_prefix[1].name
   }
 }
 
