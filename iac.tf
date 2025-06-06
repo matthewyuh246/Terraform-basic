@@ -105,6 +105,10 @@ resource "aws_eip" "iac-eip" {
   depends_on = [aws_internet_gateway.iac-gateway, aws_instance.iac-instance]
 }
 
+output "eip_public_ip" {
+  value = aws_eip.iac-eip.public_ip
+}
+
 #9 Webサーバー構築（Linuxサーバー構築、Apacheインストール、index.html作成）
 resource "aws_instance" "iac-instance" {
   ami = "ami-027fff96cc515f7bc"
@@ -128,6 +132,13 @@ resource "aws_instance" "iac-instance" {
   }
 }
 
+output "instance_id" {
+  value = aws_instance.iac-instance.private_ip
+}
+
+output "instance_private_ip" {
+  value = aws_instance.iac-instance.id
+}
 
 # # EC2インスタンス
 # resource "aws_instance" "iac-instance" {
