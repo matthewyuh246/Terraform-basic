@@ -14,8 +14,20 @@ resource "aws_vpc" "iac-vpc" {
 
 variable "subnet_prefix" {
   description = "cidr block for the subnet"
-  # default = "10.0.1.0/24"
-  # type = string
+  type = list(object({
+    cidr_block = string
+    name       = string
+  }))
+  default = [
+    {
+      cidr_block = "10.0.1.0/24"
+      name       = "iac-subnet"
+    },
+    {
+      cidr_block = "10.0.2.0/24"
+      name       = "iac-subnet2"
+    }
+  ]
 }
 
 #2 インターネットゲートウェイ作成
@@ -115,7 +127,7 @@ resource "aws_network_interface" "iac-nw-interface" {
 
 #8 EIP（Elastic IP）作成、ENIに紐付け
 resource "aws_eip" "iac-eip" {
-  vpc                       = true
+  domain                    = "vpc"
   network_interface         = aws_network_interface.iac-nw-interface.id
   associate_with_private_ip = "10.0.1.50"
   depends_on = [aws_internet_gateway.iac-gateway, aws_instance.iac-instance]
